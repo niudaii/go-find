@@ -1,0 +1,70 @@
+path_black_words:
+  - testdata
+  - SoftwareDistribution
+  - Python27
+  - Wireshark
+  - Roaming
+  - Windows
+  - WINDOWS
+  - microsoft
+  - Microsoft
+filename_white_exts:
+  - # 配置文件
+  - .inc
+  - .config
+  - .txt
+  - .yaml
+  - .toml
+  - .xml
+  - .json
+  # web
+  - .asp
+  - .aspx
+  - .php
+  - .jsp
+  - .jspx
+  - .cgi
+  # 数据库
+  - .db
+  - .sql
+  - .mdb
+  # 备份文件
+  - .tar
+  - .zip
+  - .bak
+  - .gz
+  - .rar
+  # 文档
+  - .doc
+  - .docx
+  - .xls
+  - .md
+  # 其他
+  - .profile
+filename_keywords:
+  - pass
+  - pwd
+  - config
+  - 密码
+  - 拓扑
+  - 备忘
+content_keywords:
+  - pass
+  - pwd
+  - jdbc
+  - mysql
+  - mssql
+  - oracle
+  - login
+  - user
+  - 登录
+  - 密码
+  - 地址
+  - 网站
+  - Access Key
+  - appKey
+  - Config
+  - "ip:"
+  - host=
+  - ip=
+  - dbname
