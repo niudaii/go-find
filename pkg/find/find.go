@@ -9,19 +9,21 @@ import (
 )
 
 type Engine struct {
-	Keywords          []string
+	KeywordsArr       []string
+	Keywords          []*config.Keyword
 	FilenameWhiteExts []string
 	PathBlackWords    []string
 }
 
 func NewEngine(keyword, filenameWhiteExt, pathBlackWord string) *Engine {
-	var keywords []string
+	var keywords []*config.Keyword
+	var keywordArr []string
 	var filenameWhiteExts []string
 	var pathBlackWords []string
 	if keyword == "" {
-		keywords = config.Conf.FilenameKeywords
+		keywordArr = config.Conf.FilenameKeywords
 	} else {
-		keywords = strings.Split(keyword, ",")
+		keywordArr = strings.Split(keyword, ",")
 	}
 	if filenameWhiteExt == "" {
 		filenameWhiteExts = config.Conf.FilenameWhiteExts
@@ -33,26 +35,38 @@ func NewEngine(keyword, filenameWhiteExt, pathBlackWord string) *Engine {
 	} else {
 		pathBlackWords = strings.Split(pathBlackWord, ",")
 	}
+	for _, temp := range keywordArr {
+		var k string
+		var v string
+		if strings.Contains(temp, "|") {
+			k = strings.Split(temp, "|")[0]
+			v = strings.Split(temp, "|")[1]
+		} else {
+			k = temp
+		}
+		keywords = append(keywords, &config.Keyword{
+			Keyword:  k,
+			Category: v,
+		})
+	}
 	return &Engine{
+		KeywordsArr:       keywordArr,
 		Keywords:          keywords,
 		FilenameWhiteExts: filenameWhiteExts,
 		PathBlackWords:    pathBlackWords,
 	}
 }
 
-var (
-	matchResults []string
-)
-
 func (e *Engine) SearchFilename(dir string) []string {
-	fmt.Printf("search filename: [%v]\n", strings.Join(e.Keywords, ","))
+	var matchResults []string
+	fmt.Printf("search filename: [%v]\n", strings.Join(e.KeywordsArr, ","))
 	filepath.Walk(dir, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 		}
 		if !info.IsDir() {
 			// 关键词匹配
 			for _, keyword := range e.Keywords {
-				if strings.Contains(info.Name(), keyword) {
+				if strings.Contains(info.Name(), keyword.Keyword) {
 					// 后缀白名单判断
 					for _, ext := range e.FilenameWhiteExts {
 						if strings.HasSuffix(info.Name(), ext) {
@@ -62,9 +76,15 @@ func (e *Engine) SearchFilename(dir string) []string {
 									return nil
 								}
 							}
-							fmt.Println("[+] " + path)
-							matchResults = append(matchResults, path)
-							break
+							var res string
+							if keyword.Category != "" {
+								res = fmt.Sprintf("%v (%v)", path, keyword.Category)
+							} else {
+								res = fmt.Sprintf("%v", path)
+							}
+							fmt.Printf("[+] %v\n", res)
+							matchResults = append(matchResults, res)
+							return nil
 						}
 					}
 				}

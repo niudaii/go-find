@@ -17,19 +17,21 @@ var (
 )
 
 type Engine struct {
-	Keywords          []string
+	KeywordsArr       []string
+	Keywords          []*config.Keyword
 	FilenameWhiteExts []string
 	PathBlackWords    []string
 }
 
 func NewEngine(keyword, filenameWhiteExt, pathBlackWord string) *Engine {
-	var keywords []string
+	var keywords []*config.Keyword
+	var keywordArr []string
 	var filenameWhiteExts []string
 	var pathBlackWords []string
 	if keyword == "" {
-		keywords = config.Conf.ContentKeywords
+		keywordArr = config.Conf.ContentKeywords
 	} else {
-		keywords = strings.Split(keyword, ",")
+		keywordArr = strings.Split(keyword, ",")
 	}
 	if filenameWhiteExt == "" {
 		filenameWhiteExts = config.Conf.FilenameWhiteExts
@@ -41,7 +43,22 @@ func NewEngine(keyword, filenameWhiteExt, pathBlackWord string) *Engine {
 	} else {
 		pathBlackWords = strings.Split(pathBlackWord, ",")
 	}
+	for _, temp := range keywordArr {
+		var k string
+		var v string
+		if strings.Contains(temp, "|") {
+			k = strings.Split(temp, "|")[0]
+			v = strings.Split(temp, "|")[1]
+		} else {
+			k = temp
+		}
+		keywords = append(keywords, &config.Keyword{
+			Keyword:  k,
+			Category: v,
+		})
+	}
 	return &Engine{
+		KeywordsArr:       keywordArr,
 		Keywords:          keywords,
 		FilenameWhiteExts: filenameWhiteExts,
 		PathBlackWords:    pathBlackWords,
@@ -49,7 +66,7 @@ func NewEngine(keyword, filenameWhiteExt, pathBlackWord string) *Engine {
 }
 
 func (e *Engine) SearchContent(dir string) []string {
-	fmt.Printf("search content: [%v]\n", strings.Join(e.Keywords, ","))
+	fmt.Printf("search content: [%v]\n", strings.Join(e.KeywordsArr, ","))
 	var pathArray [100]string
 	var count = 0
 	filepath.Walk(dir, func(path string, info fs.FileInfo, err error) error {
@@ -90,10 +107,15 @@ func (e *Engine) findText(paths []string) {
 	for _, path := range paths {
 		content := util.ReadWithIOUtil(path)
 		for _, keyword := range e.Keywords {
-			index := strings.Index(content, keyword)
+			index := strings.Index(content, keyword.Keyword)
 			if index > -1 {
-				res := path + " => " + strings.Replace(fmt.Sprintf("[ %v ]", content[util.Max(0, index-10):util.Min(len(content), index+10)]), "\n", "", -1)
-				fmt.Println("[+] " + res)
+				var res string
+				if keyword.Category != "" {
+					res = fmt.Sprintf("%v => [%v] (%v)", path, strings.Replace(content[util.Max(0, index-10):util.Min(len(content), index+10)], "\n", "", -1), keyword.Category)
+				} else {
+					res = fmt.Sprintf("%v => [%v]", path, strings.Replace(content[util.Max(0, index-10):util.Min(len(content), index+10)], "\n", "", -1))
+				}
+				fmt.Printf("[+] %v\n", res)
 				mutex.Lock()
 				matchResults = append(matchResults, res)
 				mutex.Unlock()

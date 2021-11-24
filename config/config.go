@@ -19,6 +19,11 @@ type InitConfig struct {
 	ContentKeywords   []string `yaml:"content_keywords"`
 }
 
+type Keyword struct {
+	Keyword  string
+	Category string
+}
+
 func init() {
 	data, _ := f.ReadFile("config.yaml")
 	err := yaml.Unmarshal(data, &Conf)

@@ -3,7 +3,6 @@ path_black_words:
   - SoftwareDistribution
   - Python27
   - Wireshark
-  - Roaming
   - Windows
   - WINDOWS
   - microsoft
@@ -17,6 +16,7 @@ filename_white_exts:
   - .toml
   - .xml
   - .json
+  - .properties
   # web
   - .asp
   - .aspx
@@ -24,6 +24,7 @@ filename_white_exts:
   - .jsp
   - .jspx
   - .cgi
+  - .go
   # 数据库
   - .db
   - .sql
@@ -42,29 +43,67 @@ filename_white_exts:
   # 其他
   - .profile
 filename_keywords:
+  - finalshell|product
+  - NetSarang|product
+  - WinSCP|product
+  - FileZilla|product
+  - TeamViewer|product
+  - SunloginClient|product
+  # 用友数据库配置文件
+  - prop.xml|用友
+  # 致远数据库配置文件
+  - datasourceCtp.properties|致远
+  # 泛微数据库配置文件
+  - weaver.properties|泛微
+  # 万户数据库配置文件
+  - whconfig.xml|万户
+  # tomcat配置文件
+  - application.properties|tomcat
+  - webapp.properties|tomcat
+  - db.properties|tomcat
+  - jdbc.properties|tomcat
+  - tomcat-users.xml|tomcat
+  # activeMQ
+  - jetty-realm.properties|activeMQ
+  # weblogic
+  - boot.properties|weblogic
+  - SerializedSystemIni.dat|weblogic
+  # 关键词
   - pass
   - pwd
   - config
   - 密码
   - 拓扑
   - 备忘
+  - vlanIP
+  - 交换机
+  - 网络设备
+  - 账号
+  - 通信录
+  - 设备登录
 content_keywords:
+  # 数据库
+  - mysql|数据库
+  - oracle|数据库
+  - mssql|数据库
+  - redis|数据库
+  - postgre|数据库
+  - jdbc|数据库
+  - dbname|数据库
+  - sqlite|数据库
+  # AKSK
+  - Access Key|aksk
+  - appKey|aksk
+  # 常见关键词
   - pass
   - pwd
-  - jdbc
-  - mysql
-  - mssql
-  - oracle
   - login
   - user
   - 登录
   - 密码
   - 地址
   - 网站
-  - Access Key
-  - appKey
   - Config
   - "ip:"
   - host=
   - ip=
-  - dbname
