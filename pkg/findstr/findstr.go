@@ -23,9 +23,24 @@ type Engine struct {
 }
 
 func NewEngine(keyword, filenameWhiteExt, pathBlackWord string) *Engine {
-	keywords := util.ToSet(strings.Split(keyword, ","), config.Conf.ContentKeywords)
-	filenameWhiteExts := util.ToSet(strings.Split(filenameWhiteExt, ","), config.Conf.FilenameWhiteExts)
-	pathBlackWords := util.ToSet(strings.Split(pathBlackWord, ","), config.Conf.PathBlackWords)
+	var keywords []string
+	var filenameWhiteExts []string
+	var pathBlackWords []string
+	if keyword == "" {
+		keywords = config.Conf.ContentKeywords
+	} else {
+		keywords = strings.Split(keyword, ",")
+	}
+	if filenameWhiteExt == "" {
+		filenameWhiteExts = config.Conf.FilenameWhiteExts
+	} else {
+		filenameWhiteExts = strings.Split(filenameWhiteExt, ",")
+	}
+	if pathBlackWord == "" {
+		pathBlackWords = config.Conf.PathBlackWords
+	} else {
+		pathBlackWords = strings.Split(pathBlackWord, ",")
+	}
 	return &Engine{
 		Keywords:          keywords,
 		FilenameWhiteExts: filenameWhiteExts,
