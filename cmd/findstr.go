@@ -4,37 +4,21 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"go-find/config"
-	"go-find/pkg/findstr"
+	"go-find/pkg/runner"
 	"go-find/pkg/util"
-	"os"
-	"strings"
 )
 
 func init() {
-	findstrCmd.PersistentFlags().StringVarP(&dir, "dir", "d", "", "dir to search")
-	findstrCmd.PersistentFlags().StringVarP(&keyword, "keywords", "k", "", "keywords, split by comma")
-	findstrCmd.PersistentFlags().StringVarP(&filenameWhiteExt, "filename-white-ext", "", "", "filename white ext, split by comma")
-	findstrCmd.PersistentFlags().StringVarP(&pathBlackWord, "path-black-word", "", "", "path black word, split by comma")
-	findstrCmd.PersistentFlags().StringVarP(&output, "output", "o", "findstr_results.txt", "output name")
 	rootCmd.AddCommand(findstrCmd)
 }
 
 var findstrCmd = &cobra.Command{
 	Use:   "findstr",
-	Short: fmt.Sprintf("文件名搜索关键词: [%v]\n", strings.Join(config.Conf.ContentKeywords, ",")),
+	Short: fmt.Sprintf("文件内容搜索,内置关键词: %v\n", config.Conf.FindstrKeywords),
 	Run: func(cmd *cobra.Command, args []string) {
-		if dir == "" {
-			fmt.Println("请输入要搜索的路径")
-			os.Exit(1)
-		}
-		_, err := os.Stat(dir)
-		if err != nil {
-			fmt.Println("输入的路径不存在")
-			os.Exit(1)
-		}
-		engine := findstr.NewEngine(keyword, filenameWhiteExt, pathBlackWord)
-		results := engine.SearchContent(dir)
-		fmt.Printf("match count: %v\n", len(results))
+		engine := runner.NewEngine(keyword, fileWhiteExt, pathBlackWord)
+		results := engine.Findstr(dir)
+		fmt.Printf("匹配数量: %v\n", len(results))
 		if len(results) > 0 {
 			util.WriteResult(output, results)
 		}

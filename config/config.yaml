@@ -7,8 +7,8 @@ path_black_words:
   - WINDOWS
   - microsoft
   - Microsoft
-filename_white_exts:
-  - # 配置文件
+file_white_exts:
+  # 配置文件
   - .inc
   - .config
   - .txt
@@ -43,7 +43,7 @@ filename_white_exts:
   # 其他
   - .profile
   - .ktr
-filename_keywords:
+find_keywords:
   - finalshell|product
   - NetSarang|product
   - WinSCP|product
@@ -90,7 +90,7 @@ filename_keywords:
   - 系统
   - AccessKey
   - 账簿
-content_keywords:
+findstr_keywords:
   # 数据库
   - mysql|数据库
   - oracle|数据库

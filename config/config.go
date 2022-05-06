@@ -13,10 +13,10 @@ var f embed.FS
 var Conf = new(InitConfig)
 
 type InitConfig struct {
-	PathBlackWords    []string `yaml:"path_black_words"`
-	FilenameWhiteExts []string `yaml:"filename_white_exts"`
-	FilenameKeywords  []string `yaml:"filename_keywords"`
-	ContentKeywords   []string `yaml:"content_keywords"`
+	PathBlackWords  []string `yaml:"path_black_words"`
+	FileWhiteExts   []string `yaml:"file_white_exts"`
+	FindKeywords    []string `yaml:"find_keywords"`
+	FindstrKeywords []string `yaml:"findstr_keywords"`
 }
 
 type Keyword struct {
@@ -25,10 +25,13 @@ type Keyword struct {
 }
 
 func init() {
-	data, _ := f.ReadFile("config.yaml")
-	err := yaml.Unmarshal(data, &Conf)
-	if err != nil {
+	if data, err := f.ReadFile("config.yaml"); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
+	} else {
+		if err = yaml.Unmarshal(data, &Conf); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	}
 }
