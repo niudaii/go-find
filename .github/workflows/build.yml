@@ -54,7 +54,7 @@ jobs:
         with:
           # note you'll typically need to create a personal access token
           # with permissions to create releases in the other repo
-          files: test_*
+          files: go-find_*
           fail_on_unmatched_files: true
           token: ${{ secrets.TOKEN }}
           append_body: true
