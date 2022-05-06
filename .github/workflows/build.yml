@@ -1,0 +1,60 @@
+name: 🎉 Build Binary
+on:
+  create:
+    tags:
+      - v*
+  workflow_dispatch:
+jobs:
+
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+    steps:
+      - name: Set up Go 1.17
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.17
+        id: go
+
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Get dependencies
+        run: go mod download
+
+      - name: Build On Linux
+        run: |
+          go build -ldflags "-s -w" -o ./go-find_linux main.go
+        if: matrix.os == 'ubuntu-latest'
+
+      - name: Build On Darwin
+        run: |
+          go build -ldflags "-s -w" -o ./go-find_darwin main.go
+        if: matrix.os == 'ubuntu-latest'
+        env:
+          GOOS: darwin
+
+      - name: Build On Windows
+        run: |
+          go build -ldflags "-s -w" -o ./go-find_windows.exe main.go
+        if: matrix.os == 'ubuntu-latest'
+        env:
+          GOOS: windows
+
+      - name: Release
+        uses: softprops/action-gh-release@master
+        with:
+          # note you'll typically need to create a personal access token
+          # with permissions to create releases in the other repo
+          files: test_*
+          fail_on_unmatched_files: true
+          token: ${{ secrets.TOKEN }}
+          append_body: true

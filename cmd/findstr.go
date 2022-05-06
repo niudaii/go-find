@@ -13,9 +13,9 @@ import (
 func init() {
 	findstrCmd.PersistentFlags().StringVarP(&dir, "dir", "d", "", "dir to search")
 	findstrCmd.PersistentFlags().StringVarP(&keyword, "keywords", "k", "", "keywords, split by comma")
-	findstrCmd.PersistentFlags().StringVarP(&filenameWhiteExt, "fwe", "", "", "filenameWhiteExt, split by comma")
-	findstrCmd.PersistentFlags().StringVarP(&pathBlackWord, "pbw", "", "", "pathBlackWord, split by comma")
-	findstrCmd.PersistentFlags().StringVarP(&output, "output", "o", "matchResults.txt", "output name")
+	findstrCmd.PersistentFlags().StringVarP(&filenameWhiteExt, "filename-white-ext", "", "", "filename white ext, split by comma")
+	findstrCmd.PersistentFlags().StringVarP(&pathBlackWord, "path-black-word", "", "", "path black word, split by comma")
+	findstrCmd.PersistentFlags().StringVarP(&output, "output", "o", "findstr_results.txt", "output name")
 	rootCmd.AddCommand(findstrCmd)
 }
 

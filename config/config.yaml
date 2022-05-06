@@ -42,6 +42,7 @@ filename_white_exts:
   - .md
   # 其他
   - .profile
+  - .ktr
 filename_keywords:
   - finalshell|product
   - NetSarang|product
@@ -81,6 +82,14 @@ filename_keywords:
   - 账号
   - 通信录
   - 设备登录
+  - 台账
+  - 数据库
+  - 配置
+  - 网段
+  - 运维
+  - 系统
+  - AccessKey
+  - 账簿
 content_keywords:
   # 数据库
   - mysql|数据库
@@ -107,3 +116,16 @@ content_keywords:
   - "ip:"
   - host=
   - ip=
+  - 拓扑
+  - 备忘
+  - vlanIP
+  - 交换机
+  - 网络设备
+  - 账号
+  - 通信录
+  - 设备登录
+  - 数据库
+  - 配置
+  - 网段
+  - 运维
+  - 系统
